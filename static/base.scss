@@ -1,0 +1,166 @@
+@charset "UTF-8";
+$pixelBase: 16*4;
+/**
+ * Eric Meyer's Reset CSS v2.0 (http://meyerweb.com/eric/tools/css/reset/)
+ * http://cssreset.com
+ */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video, input {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font-weight: normal;
+  vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, menu, nav, section {
+  display: block;
+}
+
+body {
+  line-height: 1;
+}
+
+blockquote, q {
+  quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* custom */
+a {
+  color: #7e8c8d;
+  text-decoration: none;
+  -webkit-backface-visibility: hidden;
+}
+
+li {
+  list-style: none;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track-piece {
+  background-color: rgba(0, 0, 0, 0.2);
+  -webkit-border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:vertical {
+  height: 5px;
+  background-color: rgba(125, 125, 125, 0.7);
+  -webkit-border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+  width: 5px;
+  background-color: rgba(125, 125, 125, 0.7);
+  -webkit-border-radius: 6px;
+}
+
+html, body {
+  width: 100%;
+}
+
+body {
+  -webkit-text-size-adjust: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+
+html {
+  font-size: #{$pixelBase}px;
+}
+
+
+
+.clearfix {
+  zoom: 1;
+  &:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+  }
+}
+
+
+@function parseInt($n ) {
+  //  /* 去掉单位 13px -> 13 */
+  @return $n / ($n * 0 + 1);
+}
+
+@function rem($values ) {
+  $list: (); // 存储转变后的值
+
+  @each $value in $values {
+    // 遍历传入的值
+
+    @if $value == auto or parseInt($value) == 0 {
+      // 0 和 auto 原样返回
+      $list: append($list, $value);
+    } @else {
+      $unit: unit($value); //取单位
+      $val: parseInt($value); // 取数字值
+
+      @if $unit == "px" {
+        //转换px值
+        $list: append($list, ($val / $pixelBase + rem));
+      }
+
+      @if $unit == "rem" {
+        // rem值不转换
+        $list: append($list, $value);
+      }
+    }
+  }
+
+  @return $list;// 返回值列表
+}
+
+//字高度垂直居中 height=line-height
+@mixin height_middle($h){
+  height: rem($h);
+  line-height: rem($h);
+}
+//单行文字不溢出
+@mixin text_overflow(){
+  overflow: hidden;
+  word-break: keep-all;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+@mixin base_img($url){
+  background-image: url($url + "@2x.png");
+  @media (-webkit-min-device-pixel-ratio: 3),(min-device-pixel-ratio: 3){
+    background-image: url($url + "@3x.png");
+  }
+}
+
