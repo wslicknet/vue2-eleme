@@ -31,8 +31,12 @@ export default {
 
 <style lang="scss">
     @import "../static/base.scss";
+    ::-webkit-scrollbar {
+        display: none;
+    }
     .tab{
         display: flex;
+        background-color: #fff;
     }
     .tab_item{
         display: inline-block;
