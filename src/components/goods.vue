@@ -24,11 +24,11 @@
                                 <p class="item_desc">{{foodsItem.description}}</p>
                                 <p class="item_sale">
                                     <span>月售{{foodsItem.sellCount}}份</span>
-                                    <span>好评率{{foodsItem.rating}}</span>
+                                    <span>好评率{{foodsItem.rating}}%</span>
                                 </p>
                                 <p class="item_price">￥{{foodsItem.price}}</p>
                                 <div class="cart_wrapper">
-
+                                    <cart-control></cart-control>
                                 </div>
                             </div>
                         </li>
@@ -36,10 +36,12 @@
                 </li>
             </ul>
         </div>
+        <shop-cart></shop-cart>
     </div>
 </template>
 <style lang="scss">
     @import "../../static/base";
+    @import '../../static/css/ionicons.css';
     .goods{
         display: flex;
         height:384px;
@@ -79,7 +81,6 @@
     }
     .foods_ul{
         position: relative;
-        z-index: -2;
     }
     .foods_title{
         padding-left: 14px;
@@ -99,6 +100,7 @@
         margin-right: 10px;
     }
     .foods_text{
+        position: relative;
         flex:1;
         .item_title{
             font-size: 14px;
@@ -122,12 +124,14 @@
             font-size: 14px;
             color: #f01414;
         }
+
         .cart_wrapper{
             position: absolute;
-
+            right: 0;
+            bottom: 0;
         }
-
     }
+
 
 
 
@@ -135,6 +139,8 @@
 <script>
     import Vue from 'vue'
     import VueResource from 'vue-resource'
+    import CartControl from './cartControl'
+    import ShopCart from './shopCart'
     Vue.use(VueResource);
 
     export default{
@@ -143,7 +149,8 @@
                 goods:[],
                 classMap:{'1':'food_type_1','2':'food_type_2'},
                 listHeight:[],
-                scrollY:0
+                scrollY:0,
+                currentIndex:0
             }
         },
         created(){
@@ -179,6 +186,7 @@
         },
         methods:{
             scrollEvent(index){
+                this.currentIndex=index;
                 let height=this.listHeight[index];
                 console.log(height);
                 this.$refs.foodsWrapper.style.transition="transform .3s ease";
@@ -203,6 +211,8 @@
 
         },
         components:{
+            CartControl,
+            ShopCart
         }
     }
 </script>

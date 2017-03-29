@@ -12,13 +12,13 @@
           </div>
           <div class="description">蜂鸟专送/38分钟送达</div>
           <div class="support">
-            <span class="icon decrease"></span>
+            <span class="s_icon decrease"></span>
             <span class="text">在线支付满28减5</span>
           </div>
         </div>
         <div class="account">
           <span class="num">5个</span>
-          <span class="icon arrow"></span>
+          <span class="icon ion-ios-arrow-right"></span>
         </div>
       </div>
       <div class="bulletin_wrapper">
@@ -26,7 +26,7 @@
           <span class="bulletin_text">
             粥品香坊其烹饪粥料的秘方源于中国千年古法，在融和现代制作工艺，由世界烹饪大师屈浩先生领衔研发。坚守纯天然、0添加的良心品质深得消费者青睐，发展至今成为粥类的引领品牌。是2008年奥运会和2013年园博会指定餐饮服务商。
           </span>
-          <span class="icon arrow"></span>
+          <span class="icon ion-ios-arrow-right"></span>
       </div>
     </div>
 </template>
@@ -46,6 +46,8 @@
 <style lang="scss">
 
 @import "../../static/base";
+@import '../../static/css/ionicons.css';
+
 body{
   font-size: rem(12px);
 }
@@ -100,7 +102,7 @@ body{
 .description{
   margin-bottom: rem(20px);
 }
-.icon{
+.s_icon{
   display: inline-block;
   width:rem(24px);
   height: rem(24px);
@@ -126,9 +128,7 @@ body{
 .num{
   margin-right: rem(16px);
 }
-.arrow:before{
-  content: "\E909";
-}
+
 .bulletin_wrapper{
   position: relative;
   height: rem(56px);
