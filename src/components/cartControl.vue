@@ -2,13 +2,13 @@
     <div class="cart_content">
 
         <transition name="move">
-            <span class="num_icon num_minus" @click="decrease" v-show="cartNum>0">
+            <span class="num_icon num_minus" @click="decrease(food)" v-show="food.cartNum>0">
                 <i class="icon ion-minus-circled"></i>
             </span>
         </transition>
 
-        <span class="cart_num" v-if="cartNum>0">{{cartNum}}</span>
-        <span class="num_icon num_add" @click="add">
+        <span class="cart_num" v-if="food.cartNum>0">{{food.cartNum}}</span>
+        <span class="num_icon num_add" @click="add(food)">
             <i class="icon ion-android-add-circle"></i>
         </span>
     </div>
@@ -42,6 +42,7 @@
         font-size: 14px;
         vertical-align: 3px;
         margin: 0 5px;
+        color:#000;
     }
     .move-enter-active,.move-leave-active{
         transition:all .4s ease;
@@ -55,19 +56,28 @@
     }
 </style>
 <script>
+import Vue from 'vue'
 
     export default{
-        data(){
-            return{
-                cartNum:0
+        props:{
+            food:{
+                type:Object
             }
         },
+
         methods:{
-            add(){
-                this.cartNum++;
+            add(item){
+                if(!this.food.cartNum){
+                    Vue.set(this.food,'cartNum',1);
+                }else{
+                    this.food.cartNum++;
+                }
+                this.$store.commit('ADD_FOODS',item);
             },
-            decrease(){
-                this.cartNum--;
+            decrease(item){
+                this.food.cartNum--;
+                this.$store.commit('DECREASE_FOODS',item);
+
             }
         },
         components:{

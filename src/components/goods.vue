@@ -28,7 +28,7 @@
                                 </p>
                                 <p class="item_price">￥{{foodsItem.price}}</p>
                                 <div class="cart_wrapper">
-                                    <cart-control></cart-control>
+                                    <cart-control :food="foodsItem"></cart-control>
                                 </div>
                             </div>
                         </li>
@@ -36,7 +36,7 @@
                 </li>
             </ul>
         </div>
-        <shop-cart></shop-cart>
+        <shop-cart :minPay="seller.minPrice" :foods="selectedFoods"></shop-cart>
     </div>
 </template>
 <style lang="scss">
@@ -144,13 +144,19 @@
     Vue.use(VueResource);
 
     export default{
+        props:{
+            seller:{
+                type:Object
+            }
+        },
         data(){
             return{
                 goods:[],
                 classMap:{'1':'food_type_1','2':'food_type_2'},
                 listHeight:[],
                 scrollY:0,
-                currentIndex:0
+                currentIndex:0,
+                minPay:0
             }
         },
         created(){
@@ -182,20 +188,21 @@
                     }
                 }
                 return 0;
+            },
+            selectedFoods(){
+                return this.$store.state.foods;
             }
         },
         methods:{
             scrollEvent(index){
                 this.currentIndex=index;
                 let height=this.listHeight[index];
-                console.log(height);
                 this.$refs.foodsWrapper.style.transition="transform .3s ease";
                 this.$refs.foodsWrapper.style.transform="translateY(-"+height+"px)";
             },
             _initHeight(){
                 let height=0;
                 this.listHeight.push(height);
-                console.log(this.$refs);
                 let len=this.$refs.li.length;
                 for(let i=0;i<len;i++){
                     height+=this.$refs.li[i].offsetHeight+18;
@@ -204,10 +211,10 @@
             },
             _initScrollEvent(){
                 this.$refs.foodsWrapper.addEventListener('scroll',function(){
-                    console.log('yy');
                     this.scrollY=this.$refs.foodsWrapper.scrollY;
                 });
-            }
+            },
+
 
         },
         components:{

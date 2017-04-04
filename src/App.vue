@@ -14,18 +14,44 @@
       </div>
 
       <keep-alive>
-          <router-view></router-view>
+          <router-view :seller="seller"></router-view>
       </keep-alive>
   </div>
 </template>
 
-<script>
-import header from './components/header'
+<script type="javascript">
+    import Vue from 'vue'
+    import header from './components/header'
+    import VueResource from 'vue-resource'
+    Vue.use(VueResource);
+
 export default {
   name: 'app',
+  data(){
+      return{
+          seller:{}
+      }
+
+  },
   components:{
     'v-header':header
-  }
+  },
+  created(){
+      this.$http({
+            url:'/api/seller',
+            method:'get',
+            emulateJSON:true
+        }).then((resp)=>{
+            let obj=resp.body;
+            if(obj.errcode==0){
+                this.seller=obj.data;
+
+            }else{
+                this.seller='';
+            }
+            console.log(resp);
+        });
+      }
 }
 </script>
 
