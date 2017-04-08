@@ -57,6 +57,10 @@ export default {
 
 <style lang="scss">
     @import "../static/base.scss";
+    body{
+        color: #000;
+
+    }
     ::-webkit-scrollbar {
         display: none;
     }

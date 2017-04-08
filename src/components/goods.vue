@@ -1,43 +1,47 @@
 <template>
-    <div class="goods">
-        <div class="left_list">
-            <ul>
-                <li @click="scrollEvent(index)" class="item" v-for="(item,index) in goods" :class="{'current':currentIndex==index}">
+    <div>
+        <div class="goods">
+            <div class="left_list">
+                <ul>
+                    <li @click="scrollEvent(index)" class="item" v-for="(item,index) in goods" :class="{'current':currentIndex==index}">
                     <span class="item_text">
                         <i v-if="item.type>0" class="icon" :class="classMap[item.type]"></i>
                         {{item.name}}
                     </span>
-                </li>
-            </ul>
-        </div>
-        <div class="right_list">
-            <ul class="foods_ul" ref="foodsWrapper">
-                <li class="foods_list" v-for="item in goods" ref="li">
-                    <h3 class="foods_title">{{item.name}}</h3>
-                    <ul>
-                        <li class="foods_item" v-for="foodsItem in item.foods">
-                            <span class="foods_img">
-                                <img :src="foodsItem.icon" width="57" height="57">
-                            </span>
-                            <div class="foods_text">
-                                <h3 class="item_title">{{foodsItem.name}}</h3>
-                                <p class="item_desc">{{foodsItem.description}}</p>
-                                <p class="item_sale">
-                                    <span>月售{{foodsItem.sellCount}}份</span>
-                                    <span>好评率{{foodsItem.rating}}%</span>
-                                </p>
-                                <p class="item_price">￥{{foodsItem.price}}</p>
-                                <div class="cart_wrapper">
-                                    <cart-control :food="foodsItem"></cart-control>
+                    </li>
+                </ul>
+            </div>
+            <div class="right_list">
+                <ul class="foods_ul" ref="foodsWrapper">
+                    <li class="foods_list" v-for="item in goods" ref="li">
+                        <h3 class="foods_title">{{item.name}}</h3>
+                        <ul>
+                            <li @click="showFoodDetail(foodsItem,$event)" class="foods_item" v-for="foodsItem in item.foods">
+                                <span class="foods_img">
+                                    <img :src="foodsItem.icon" width="57" height="57">
+                                </span>
+                                <div class="foods_text">
+                                    <h3 class="item_title">{{foodsItem.name}}</h3>
+                                    <p class="item_desc">{{foodsItem.description}}</p>
+                                    <p class="item_sale">
+                                        <span>月售{{foodsItem.sellCount}}份</span>
+                                        <span>好评率{{foodsItem.rating}}%</span>
+                                    </p>
+                                    <p class="item_price">￥{{foodsItem.price}}</p>
+                                    <div class="cart_wrapper">
+                                        <cart-control :food="foodsItem"></cart-control>
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <shop-cart :minPay="seller.minPrice" :foods="selectedFoods"></shop-cart>
         </div>
-        <shop-cart :minPay="seller.minPrice" :foods="selectedFoods"></shop-cart>
+        <food :food="foodItem"  ref="food"></food>
     </div>
+
 </template>
 <style lang="scss">
     @import "../../static/base";
@@ -141,6 +145,7 @@
     import VueResource from 'vue-resource'
     import CartControl from './cartControl'
     import ShopCart from './shopCart'
+    import Food from './food'
     Vue.use(VueResource);
 
     export default{
@@ -156,7 +161,9 @@
                 listHeight:[],
                 scrollY:0,
                 currentIndex:0,
-                minPay:0
+                minPay:0,
+                foodItem:{},
+                showDetailFlag:false
             }
         },
         created(){
@@ -214,12 +221,20 @@
                     this.scrollY=this.$refs.foodsWrapper.scrollY;
                 });
             },
+            showFoodDetail(foodItem,event){
+                if(event.target.tagName.toLowerCase() == 'i'){
+                    return ;
+                }
+                this.foodItem=foodItem;
+                this.$refs.food.show();
+            }
 
 
         },
         components:{
             CartControl,
-            ShopCart
+            ShopCart,
+            Food
         }
     }
 </script>

@@ -14,24 +14,27 @@
                 <div class="count" :class="is_enough">{{description}}</div>
             </div>
 
-            <div class="shoplist" v-show="listShow">
-                <div class="list_header">
-                    <span class="left">购物车</span>
-                    <span class="right">清空</span>
-                </div>
-                <div class="list">
-                    <ul>
-                        <li class="food" v-for="foodItem in foods" v-show="foodItem.cartNum>0">
-                            <span class="food_name">{{foodItem.name}}</span>
-                            <div class="food_price">￥{{foodItem.price}}</div>
-                            <div class="cart_wrapper">
-                                <cart-control :food="foodItem"></cart-control>
-                            </div>
-                        </li>
-                    </ul>
+            <transition name="move">
+                <div class="shoplist" v-show="listShow">
+                    <div class="list_header">
+                        <span class="left">购物车</span>
+                        <span class="right">清空</span>
+                    </div>
+                    <div class="list">
+                        <ul>
+                            <li class="food" v-for="foodItem in foods" v-show="foodItem.cartNum>0">
+                                <span class="food_name">{{foodItem.name}}</span>
+                                <div class="food_price">￥{{foodItem.price}}</div>
+                                <div class="cart_wrapper">
+                                    <cart-control :food="foodItem"></cart-control>
+                                </div>
+                            </li>
+                        </ul>
 
+                    </div>
                 </div>
-            </div>
+            </transition>
+
 
         </div>
 
@@ -145,6 +148,8 @@
         bottom: 48px;
         width: 100%;
         z-index: -1;
+        transform:translate3d(0,0,0);
+
         .list_header{
             height: 40px;
             line-height: 40px;
@@ -207,6 +212,12 @@
         .fade-enter,.fade-leave-active{
             background: rgba(7, 17, 27, 0);
         }
+    }
+    .move-enter-active,.move-leave-active{
+        transition: all .5s ease;
+    }
+    .move-enter,.move-leave-active{
+        transform:translate3d(0, 100%, 0) ;
     }
 
 
